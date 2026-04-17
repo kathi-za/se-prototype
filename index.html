@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My personal page</title>
+        <style>
+            h1{color:white; background:olive;}
+            p{font-size: 30px;}
+            li{font-size: 30px;}
+            #section1{background-color:olive;}
+            
+        </style>
+    </head>
+    <body>
+        <h1>Welcome to my page!</h1>
+        <p>
+            I am a DH student.
+        </p>
+        
+        <button onclick="closeSection("section1")">Hide</button> 
+        
+        <div id="section1">
+        <p>I like
+            <ul>
+                <li>linguistics</li>
+                <li>reading</li>
+                <li>cats</li>
+            </ul>
+        </p>
+        </div>
+
+        <button onclick="closeSection2()">Hide Section 2</button> 
+        
+        <div id="section2">
+        <p>This is section 2!</p>
+        </div>
+        
+        
+        <button onclick="toggleKatze()">Meow</button>
+
+        <div id="cat" style="display:none;">
+          <img src="Bilder/IMG_5170.JPG" width="600">
+        </div>
+        
+    </body>
+    <script>
+        function closeSection2() {
+            var section = document.querySelector("#section2");
+            section.style.display="none";
+            };
+
+        function closeSection(sectionID) {
+            var section = document.getElementById(sectionID);
+            section.style.display="none";
+            };
+            
+        function toggleKatze() {
+          let bereich = document.getElementById("cat");
+        
+          if (bereich.style.display === "none") {
+                bereich.style.display = "block";
+          }
+          else {
+            bereich.style.display = "none";
+          }
+        }
+        </script>
+</html>
