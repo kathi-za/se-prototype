@@ -3,141 +3,237 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Museum Curator - Resource Manager</title>
+    <title>The Grand Louvre - Management</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background: #eef2f3; padding: 20px; color: #333; }
-        h1 { color: #2c3e50; }
-        .game { background: white; padding: 20px; border-radius: 12px; width: 400px; margin: 10px auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .market-box { border: 2px solid #3498db; background: #ebf5fb; padding: 15px; border-radius: 8px; margin-top: 15px; }
-        button { margin: 5px; padding: 10px 15px; font-size: 14px; cursor: pointer; border-radius: 5px; border: none; background: #3498db; color: white; transition: 0.3s; }
-        button:hover { background: #2980b9; }
-        button.skip { background: #95a5a6; }
-        .stats { display: grid; grid-template-columns: 1fr 1fr; text-align: left; gap: 10px; padding: 10px; }
-        .status-msg { font-style: italic; color: #7f8c8d; min-height: 20px; margin-top: 10px; }
+        :root {
+            --gold: #c5a059;
+            --dark-marble: #1a1a1a;
+            --paper: #fdfcf8;
+        }
+
+        body { 
+            font-family: 'Georgia', serif; 
+            background: var(--paper); 
+            color: var(--dark-marble);
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        h1, h2, h3 { 
+            font-weight: 300; 
+            letter-spacing: 2px; 
+            text-transform: uppercase;
+        }
+
+        header {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+        }
+
+        .panel { 
+            background: white; 
+            padding: 30px; 
+            border: 1px solid #eee;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 5px;
+        }
+
+        .market-offer {
+            background: #f9f9f9;
+            border-left: 4px solid var(--gold);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .art-card {
+            background: white;
+            border: 8px solid white;
+            outline: 1px solid #ddd;
+            padding: 10px;
+            font-size: 0.7em;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        button { 
+            background: var(--dark-marble); 
+            color: white; 
+            border: none; 
+            padding: 12px 20px; 
+            cursor: pointer; 
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+        }
+
+        button:hover { background: var(--gold); }
+        button.secondary { background: none; border: 1px solid #ccc; color: #666; }
+
+        input[type="number"] {
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 60px;
+            font-family: serif;
+        }
+
+        .currency { color: var(--gold); font-weight: bold; }
     </style>
 </head>
 <body>
-    <h1>🏛️ Museum Curator</h1>
-    
-    <div class="game">
-        <div class="stats">
-            <div><b>Year:</b> <span id="year">2026</span></div>
-            <div><b>Budget:</b> €<span id="budget">50000</span></div>
-            <div><b>Artworks:</b> <span id="artCount">0</span></div>
-            <div><b>Popularity:</b> <span id="popScore">0</span></div>
-            <div><b>Ticket Price:</b> €<span id="ticketPriceDisplay">10</span></div>
-            <div><b>Last Year Sales:</b> <span id="soldTickets">0</span></div>
-        </div>
-    </div>
 
-    <div class="game">
-        <h3>Next Acquisition</h3>
-        <div id="market-ui" class="market-box">
-            <p><b id="artName">Loading...</b></p>
-            <p>Cost: €<span id="artCost">0</span></p>
-            <p>Popularity: <span id="artPop">0</span></p>
-            <button onclick="buyArtwork()">Buy Artwork</button>
-            <button class="skip" onclick="generateMarketOffer()">Skip / New Offer</button>
-        </div>
-        <p class="status-msg" id="message"></p>
-    </div>
+    <header>
+        <h1>The National Gallery</h1>
+        <p>Est. <span id="year">2026</span></p>
+    </header>
 
-    <div class="game">
-        <label>Set Ticket Price (€): <input type="number" id="newTicketPrice" value="10" min="1" /></label>
-        <button onclick="updateTicketPrice()">Update Price</button>
-        <hr>
-        <button style="background: #27ae60; width: 100%; font-weight: bold;" onclick="endYear()">END YEAR & COLLECT REVENUE</button>
+    <div class="container">
+        <aside>
+            <div class="panel">
+                <h3>Financials</h3>
+                <div class="stats-row"><span>Budget</span> <span class="currency">€<span id="budget">50000</span></span></div>
+                <div class="stats-row"><span>Visitors (LY)</span> <span id="soldTickets">0</span></div>
+                <div class="stats-row"><span>Total Appeal</span> <span id="popScore">0</span></div>
+                
+                <div style="margin-top: 25px;">
+                    <label>Ticket Price: €</label>
+                    <input type="number" id="newTicketPrice" value="15" onchange="updateTicketPrice()">
+                </div>
+                
+                <button onclick="endYear()" style="margin-top: 30px;">Open Next Season</button>
+            </div>
+
+            <div class="panel market-offer">
+                <h3>Acquisition</h3>
+                <p><i id="artName">The Waiting Lady</i></p>
+                <div class="stats-row"><span>Cost</span> <span>€<span id="artCost">0</span></span></div>
+                <div class="stats-row"><span>Prestige</span> <span id="artPop">0</span></div>
+                <button onclick="buyArtwork()">Acquire Piece</button>
+                <button class="secondary" onclick="generateMarketOffer()">Decline</button>
+            </div>
+        </aside>
+
+        <main class="panel">
+            <h3>Current Exhibition</h3>
+            <p id="empty-msg">Your gallery walls are currently empty. Acquire art to attract visitors.</p>
+            <div class="gallery-grid" id="gallery">
+                </div>
+        </main>
     </div>
 
     <script>
         let year = 2026;
-        let budget = 50000;
+        let budget = 65000;
         let collection = [];
-        let ticketPrice = 10;
+        let ticketPrice = 15;
         let lastYearSales = 0;
         let currentOffer = null;
 
-        const artNames = ["Mona Lisa's Smile", "The Blue Vase", "Digital Chaos", "Marble Statue", "Ancient Coin", "Post-Modern Splatter", "Golden Sarcophagus", "Royal Portrait"];
+        const artNames = ["Starlight Nocturne", "The Gilded Frame", "Bust of Hadrian", "Ocean's Lament", "Geometric Study #4", "The Red Velveteen", "Portrait of a Duke", "Shattered Porcelain"];
 
         function updateUI() {
             document.getElementById("year").innerText = year;
             document.getElementById("budget").innerText = budget.toLocaleString();
-            document.getElementById("artCount").innerText = collection.length;
-            document.getElementById("ticketPriceDisplay").innerText = ticketPrice;
-            document.getElementById("soldTickets").innerText = lastYearSales;
+            document.getElementById("soldTickets").innerText = lastYearSales.toLocaleString();
             
             let totalPop = collection.reduce((sum, art) => sum + art.pop, 0);
             document.getElementById("popScore").innerText = totalPop;
+
+            // Update Gallery View
+            const gallery = document.getElementById("gallery");
+            const emptyMsg = document.getElementById("empty-msg");
+            gallery.innerHTML = "";
+            
+            if (collection.length > 0) {
+                emptyMsg.style.display = "none";
+                collection.forEach(art => {
+                    const card = document.createElement("div");
+                    card.className = "art-card";
+                    card.innerHTML = `<b>${art.name}</b><br><small>Prestige: ${art.pop}</small>`;
+                    gallery.appendChild(card);
+                });
+            } else {
+                emptyMsg.style.display = "block";
+            }
         }
 
         function generateMarketOffer() {
             let name = artNames[Math.floor(Math.random() * artNames.length)];
-            let cost = Math.floor(Math.random() * 15000) + 5000;
-            let pop = Math.floor(Math.random() * 50) + 10;
+            let cost = Math.floor(Math.random() * 20000) + 8000;
+            let pop = Math.floor(Math.random() * 40) + 15;
             
             currentOffer = { name, cost, pop };
-            
             document.getElementById("artName").innerText = name;
             document.getElementById("artCost").innerText = cost.toLocaleString();
             document.getElementById("artPop").innerText = pop;
-            document.getElementById("message").innerText = "A new piece is available!";
         }
 
         function buyArtwork() {
             if (budget >= currentOffer.cost) {
                 budget -= currentOffer.cost;
-                collection.push(currentOffer);
-                document.getElementById("message").innerText = "Purchased " + currentOffer.name + "!";
+                collection.push({...currentOffer});
                 generateMarketOffer();
                 updateUI();
             } else {
-                alert("Not enough budget!");
+                alert("The museum's reserves are insufficient.");
             }
         }
 
         function updateTicketPrice() {
             ticketPrice = parseInt(document.getElementById("newTicketPrice").value);
-            updateUI();
         }
 
         function endYear() {
             year++;
-            
-            // MATH: Popularity increases visitors, high price decreases them
             let totalPop = collection.reduce((sum, art) => sum + art.pop, 0);
             
-            // Logic: Base visitors = total popularity * 10.
-            // Then divided by a price factor (e.g., ticketPrice/5)
-            let priceFactor = Math.max(0.5, ticketPrice / 10);
-            lastYearSales = Math.floor((totalPop * 20) / priceFactor);
+            // Formula: Higher price drastically reduces the "Popularity Multiplier"
+            // At €15 (default), sales are healthy. Above €30, they drop fast.
+            let demand = 50 / (ticketPrice + 5); 
+            lastYearSales = Math.floor(totalPop * demand * 15);
             
-            // No art = No visitors
             if (collection.length === 0) lastYearSales = 0;
 
             let revenue = lastYearSales * ticketPrice;
             budget += revenue;
 
-            alert(`Year ${year-1} Results:\nVisitors: ${lastYearSales}\nRevenue: €${revenue.toLocaleString()}`);
+            alert(`The season has ended.\n${lastYearSales} patrons visited the gallery.\nTotal Revenue: €${revenue.toLocaleString()}`);
 
-            // Win/Loss conditions
             if (budget >= 1000000) {
-                alert("Congratulations! Your museum is world-class and self-sufficient!");
-                resetGame();
-            } else if (budget <= 0 && collection.length === 0) {
-                alert("Bankruptcy! Your museum has closed down.");
-                resetGame();
+                alert("The Museum has achieved legendary status. You win!");
+                location.reload();
+            } else if (budget <= 0) {
+                alert("Financial ruin has forced the gallery to close.");
+                location.reload();
             }
 
-            generateMarketOffer();
-            updateUI();
-        }
-
-        function resetGame() {
-            year = 2026;
-            budget = 50000;
-            collection = [];
-            ticketPrice = 10;
-            lastYearSales = 0;
             generateMarketOffer();
             updateUI();
         }
