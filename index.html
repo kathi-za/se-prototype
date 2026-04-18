@@ -106,6 +106,18 @@
 
         .currency { color: var(--gold); font-weight: bold; }
     </style>
+
+    <section class="curators-note">
+        <h2>Curator's Directive</h2>
+        <p>
+            Welcome to the helm of the institution. Your goal is to balance **prestige** with **profit**. 
+            Acquire masterpieces to increase the gallery's appeal, but manage your budget carefully. 
+            High ticket prices will bolster your reserves but deter the public; a fine collection 
+            requires a discerning eye for the "Prestige" of each piece. 
+            Win by amassing a 1,000,000€ endowment within 15 years, so you are not dependent on state fun.
+        </p>
+        
+    </section>
 </head>
 <body>
 
@@ -118,7 +130,7 @@
         <aside>
             <div class="panel">
                 <h3>Financials</h3>
-                <div class="stats-row"><span>Budget</span> <span class="currency">€<span id="budget">50000</span></span></div>
+                <div class="stats-row"><span>Budget</span> <span class="currency">€<span id="budget">30000</span></span></div>
                 <div class="stats-row"><span>Visitors (LY)</span> <span id="soldTickets">0</span></div>
                 <div class="stats-row"><span>Total Appeal</span> <span id="popScore">0</span></div>
                 
@@ -150,7 +162,7 @@
 
     <script>
         let year = 2026;
-        let budget = 65000;
+        let budget = 30000;
         let collection = [];
         let ticketPrice = 15;
         let lastYearSales = 0;
