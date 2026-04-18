@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kingdom - Resource Management Game</title>
+    <title>Museum - Resource Management Game</title>
     <style>
       body { font-family: Arial, sans-serif; text-align: center; background: #f4f4f4; padding: 20px; }
       h1 { color: #333; }
@@ -14,130 +14,93 @@
     </style>
   </head>
   <body>
-    <h1>Kingdom - Resource Manager</h1>
+    <h1>Museum - Resource Manager</h1>
     <div class="game">
         <h2>How to Play</h2>
         <ul>
-          <li>Buy & Sell Land: Manage your territory wisely.</li>
+          <li>Buy & Sell Artworks: Manage your galery wisely.</li>
 
-          <li>Buy & Feed Grain: Keep your people from starving.</li>
-
-          <li>Set Taxes: High taxes bring more gold but can slow growth.</li>
+          <li>Set Ticket Prices: High ticket prices bring more money but can slow sales.</li>
 
           <li>End the Year: Time advances, and random events happen.</li>
 
-          <li>Win by reaching 1,000,000 gold or lose if your people die.</li>
+          <li>Win by reaching 1,000,000 Euros in 15 years in or lose if you run out of budget.</li>
         </ul>
       </div>
     
     <div class="game">
-      <p><b>Year:</b> <span id="year">1500</span></p>
-      <p><b>Gold:</b> <span id="gold">1000</span></p>
-      <p><b>Land:</b> <span id="land">100</span> acres</p>
-      <p><b>Grain:</b> <span id="grain">500</span> bushels</p>
-      <p><b>Population:</b> <span id="population">50</span></p>
-      <p><b>Tax Rate:</b> <span id="taxRate">10</span>%</p>
+      <p><b>Year:</b> <span id="year">2026</span></p>
+      <p><b>Budget:</b> <span id="budget">100000</span></p>
+      <p><b>Artworks:</b> <span id="artworks">10</span> acres</p>
+      <p><b>Ticket Price:</b> <span id="ticketPrice">5</span></p>
+      <p><b>Sold Tickets:</b> <span id="soldTickets">0</span></p>
 
       <h3>Actions</h3>
-      <label>Buy Land: <input type="number" id="buyLand" value="0" /></label>
-      <button onclick="buyLand()">Buy</button><br />
+      <label>Buy Artwork: <input type="number" id="buyArtwork" value="0" /></label>
+      <button onclick="buyArtwork()">Buy</button><br />
 
-      <label>Sell Land: <input type="number" id="sellLand" value="0" /></label>
-      <button onclick="sellLand()">Sell</button><br />
-
-      <label>Buy Grain: <input type="number" id="buyGrain" value="0" /></label>
-      <button onclick="buyGrain()">Buy</button><br />
+      <label>Sell Artwork: <input type="number" id="sellArtwork" value="0" /></label>
+      <button onclick="sellArtwork()">Sell</button><br />
 
       <label
-        >Feed Population: <input type="number" id="feedGrain" value="0"
+        >Set Ticket Price (€): <input type="number" id="setTicketPrice" value="5"
       /></label>
-      <button onclick="feedPeople()">Feed</button><br />
-
-      <label
-        >Set Tax Rate (%): <input type="number" id="setTax" value="10"
-      /></label>
-      <button onclick="setTax()">Set</button><br />
+      <button onclick="setTicketPrice()">Set</button><br />
 
       <button onclick="endYear()">End Year</button>
     </div>
 
     <script>
-      let year = 1500,
-        gold = 1000,
-        land = 100,
-        grain = 500,
-        population = 50,
-        taxRate = 10;
+      let year = 2026,
+        budget = 100000,
+        artworks = 10,
+        ticketSales = 0,
+        ticketPrice = 5;
 
       function updateUI() {
         document.getElementById("year").innerText = year;
-        document.getElementById("gold").innerText = gold;
-        document.getElementById("land").innerText = land;
-        document.getElementById("grain").innerText = grain;
-        document.getElementById("population").innerText = population;
-        document.getElementById("taxRate").innerText = taxRate;
+        document.getElementById("budget").innerText = budget;
+        document.getElementById("artworks").innerText = artworks;
+        document.getElementById("ticketSales").innerText = ticketSales;
+        document.getElementById("ticketPrice").innerText = ticketPrice;
       }
 
-      function buyLand() {
-        let amount = parseInt(document.getElementById("buyLand").value);
-        if (gold >= amount * 20) {
-          land += amount;
-          gold -= amount * 20;
+      function buyArtwork() {
+        let amount = parseInt(document.getElementById("buyArtwork").value);
+        if (budget >= amount * 20) {
+          artworks += amount;
+          budget -= amount * 20;
         } else {
-          alert("Not enough gold!");
+          alert("Not enough budget!");
         }
         updateUI();
       }
 
-      function sellLand() {
-        let amount = parseInt(document.getElementById("sellLand").value);
-        if (land >= amount) {
-          land -= amount;
-          gold += amount * 15;
+      function sellArtwork() {
+        let amount = parseInt(document.getElementById("sellArtworksd").value);
+        if (artworks >= amount) {
+          artworks -= amount;
+          budget += amount * 15;
         } else {
-          alert("Not enough land!");
+          alert("Not enough artworks!");
         }
         updateUI();
       }
 
-      function buyGrain() {
-        let amount = parseInt(document.getElementById("buyGrain").value);
-        if (gold >= amount * 2) {
-          grain += amount;
-          gold -= amount * 2;
+      function setTicketPrice() {
+        let newPrice = parseInt(document.getElementById("setTicketPrice").value);
+        if (newTicketPrice >= 0 && newTicketPrice <= 50) {
+          ticketPrice = newTicketPrice;
         } else {
-          alert("Not enough gold!");
-        }
-        updateUI();
-      }
-
-      function feedPeople() {
-        let amount = parseInt(document.getElementById("feedGrain").value);
-        if (grain >= amount) {
-          grain -= amount;
-          population += Math.floor(amount / 10);
-        } else {
-          alert("Not enough grain!");
-        }
-        updateUI();
-      }
-
-      function setTax() {
-        let newRate = parseInt(document.getElementById("setTax").value);
-        if (newRate >= 0 && newRate <= 50) {
-          taxRate = newRate;
-        } else {
-          alert("Tax rate must be between 0% and 50%!");
+          alert("Ticket Price must be between 5€ and 40€!");
         }
         updateUI();
       }
 
       function endYear() {
         year++;
-        let taxIncome = Math.floor(population * taxRate);
-        gold += taxIncome;
-        let grainConsumption = Math.floor(population * 2);
-        grain -= grainConsumption;
+        let ticketPriceIncome = Math.floor(ticketSales * ticketPrice);
+        budget += ticketPriceIncome;
 
         if (grain < 0) {
           let deaths = Math.floor(Math.abs(grain) / 2);
@@ -146,22 +109,22 @@
           alert(deaths + " people starved!");
         }
 
-        let newPeople = Math.floor(Math.random() * 10);
+        let newTicketSales = Math.floor(Math.random() * 10);
         population += newPeople;
         land += Math.floor(Math.random() * 5);
         gold -= Math.floor(Math.random() * 50);
 
         //harvest
         grain = land + Math.floor(land * 0.3)
-        if (gold >= 1000000) {
+        if (budget >= 1000000) {
           alert(
-            "Congratulations! You have become the richest ruler in history!"
+            "Congratulations! You are not dependet on state funding anymore!"
           );
           resetGame();
         }
 
-        if (population <= 0) {
-          alert("Your kingdom has collapsed!");
+        if (budget <= 0) {
+          alert("You ran out of budget!");
           resetGame();
         }
 
@@ -169,12 +132,11 @@
       }
 
       function resetGame() {
-        year = 1500;
-        gold = 1000;
-        land = 100;
-        grain = 500;
-        population = 50;
-        taxRate = 10;
+        year = 2026;
+        budget = 1000;
+        artworks = 10;
+        ticketSales = 0;
+        ticketPrice = 10;
         updateUI();
       }
 
